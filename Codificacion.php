@@ -3,7 +3,25 @@
 //Vector inicial, de ejemplo tomamos lo que vimos en clase
 $vectorBits = [0,1,0,0,1,1,1,0];
 
-function AMI($vector)
+function b8zs($vector)
+{
+	$ret = [];
+	
+	//...
+	
+	return $ret;
+}
+
+function dbz3($vector)
+{
+	$ret = [];
+	
+	//...
+	
+	return $ret;
+}
+
+function ami($vector)
 {
     $signalChange = false;
     $bitAux = null;
@@ -47,4 +65,4 @@ function RenderVector($vector)
 //print_r(AMI($vectorBits)); //este dump sirve para depurar el metodo de codificacion seleccionado
 
 //pintar el vector codificado
-echo RenderVector(AMI($vectorBits));
+echo RenderVector(ami($vectorBits));
