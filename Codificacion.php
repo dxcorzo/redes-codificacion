@@ -1,16 +1,72 @@
 <?php
         
 //Vector inicial, de ejemplo tomamos lo que vimos en clase
-$vectorBits = [0,1,0,0,1,1,1,0];
+$vectorBits = [0,1,0,0,1,1,1,0]; //ejercicio para ami
+
+$vectorBits_b8zs = [1,1,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0]; //ejercicio b8zs
 
 function b8zs($vector)
 {
-	$ret = [];
+	$ret = []; //retorno
 	
-	//...
+	//vector de busqueda
+	$secuenciaBuscar = [0,0,0,0,0,0,0,0];
+	
+	//Vector de reemplazo cuando el bit anterior es positivo
+	$secuenciaPositiva = [0,0,0,1,-1,0,-1,1];
+	
+	//Vector de reemplazo cuando el bit anterior es negativo
+	$secuenciaNegativa = [0,0,0,-1,1,0,1,-1];
+	
+	$vectorFiltro = BuscarEnVector($secuenciaBuscar, $vector);
+	
+	print_r($vectorFiltro);
+	
+	foreach($vectorFiltro as $i => $valor)
+	{
+		$minBound = $valor[0];
+		$maxBound = $valor[count($valor) - 1];
+		
+		echo "Min: $minBound / Max: $maxBound\n";
+	}
 	
 	return $ret;
 }
+
+//Busca dentro de un vector otro vector para determinar sus indices
+//la idea es hacer un split pero en vez de buscar un caracter en especifico
+//se usa otro vector para hacer el split
+function BuscarEnVector($vectorBuscar, $vector) 
+{
+    $listaIndices = array_keys($vector, $vectorBuscar[0]);
+    $ret = [];
+	
+    foreach ($listaIndices as $indice) 
+	{
+        $adicionar = true;
+        $resultado = [];
+        
+		foreach ($vectorBuscar as $i => $valor) 
+		{
+            if (!(isset($vector[$indice + $i]) && $vector[$indice + $i] == $valor)) 
+			{
+                $adicionar = false;
+                break;
+            }
+			
+            $resultado[] = $indice + $i;
+        }
+		
+        if ($adicionar == true) 
+		{ 
+            $ret[] = $resultado;
+        }
+    }
+	
+    return $ret;
+}
+
+
 
 function dbz3($vector)
 {
@@ -21,9 +77,10 @@ function dbz3($vector)
 	return $ret;
 }
 
-function ami($vector)
+//$vector es el vector de bits
+//&$signalChange es un bool pasado por referencia que indica si inicio con cambio de señal
+function ami($vector, &$signalChange)
 {
-    $signalChange = false;
     $bitAux = null;
     $ret = [];
     
@@ -44,14 +101,12 @@ function ami($vector)
     
     return $ret;
 }
-
 //PILAS! no modifiquen este algoritmo, funciona para cualquier tipo de codificacion
 function RenderVector($vector)
 {
     $s1 = "";
     $s2 = "";
     $header = "";
-
     foreach($vector as $bit)
     {
         $header .= "<th>$bit</th>";
@@ -62,7 +117,14 @@ function RenderVector($vector)
     return "<table cellspacing='0'><tr class='head'>$header</tr><tr class='ld'>$s1</tr><tr class='lu'>$s2</tr></table>";
 }
 
-//print_r(AMI($vectorBits)); //este dump sirve para depurar el metodo de codificacion seleccionado
+/*Codigo para probar AMI*/
+//$signalChange = false;
+//$vec = ami($vectorBits, $signalChange);
+//print_r(ami($vectorBits, $signalChange)); //este dump sirve para depurar el metodo de codificacion seleccionado
+
+//codigo para probar b8zs
+$vec = b8zs($vectorBits_b8zs);
+
 
 //pintar el vector codificado
-echo RenderVector(ami($vectorBits));
+//echo RenderVector(ami($vectorBits));
