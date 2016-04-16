@@ -21,22 +21,13 @@ function b8zs($vector, $logicaPositiva)
 	
 	foreach($vectorCoincidencias as $vectorOperar)
 	{
-		//indice inicial para hacer el slice del vector original
-		$min = $vectorOperar[0];
-		
-		//total de elementos a tomar para hacer el slice
-		$conteo = count($vectorOperar);
-		
-		//basado en los limites detectados, hacer el slice
-		$vectorDividido = array_slice($vector, $min, $conteo);
-		
 		//determinar cual es el metodo que aplica para resolver la secuencia
-		$metodoResolucion = DetectarMetodoResolucion($vectorDividido, "b8zs");
+		$metodoResolucion = DetectarMetodoResolucion($vectorOperar, "b8zs");
 		
 		switch($metodoResolucion)
 		{
 			case "ami":
-				$ret[] = ami($vectorDividido, $cambioSenal);
+				$ret[] = ami($vectorOperar, $cambioSenal);
 				break;
 			case "b8zs":
 				//hacer los reemplazos de la secuencia dependiendo del signo anterior
@@ -59,41 +50,27 @@ function DetectarMetodoResolucion($vectorRev, $metodoVerificar)
 }
 
 //Divide un vector basado en otro vector, incluyendo sus sobrantes.
-//este método sirve para implementacion tanto en dbz3 como b8zs
-function DividirVector($secuencia, $vectorBuscar)
+//este método sirve para implementacion tanto en hdb3 como b8zs
+function DividirVector($patron, $vectorBuscar)
 {
-	$total = count($secuencia);
-	$atotal = count($vectorBuscar);
+	//convertir ambos vectores a strings para poder manipularlos mediante expresiones regulares
+    $patron2 = implode("", $patron);
+    $vectorBuscar2  = implode("", $vectorBuscar);
 
-	$i = 0;
-	$k = 0;
+	//añadimos comas antes y despues de la cadena a buscar
+    $vectorBuscar2  = preg_replace("/" . $patron2 . "/", "," . $patron2 . ",", $vectorBuscar2);
 
-	$ret = [];
-  
-	while($i < $atotal)
+    //usando las comas, puedo armar un vector haciendo un split, ahi tengo tanto las coincidencias como los sobrantes
+    $vectorBuscar2  = preg_split("/,/", $vectorBuscar2, 0, PREG_SPLIT_NO_EMPTY);
+
+    //convertir los chars de las cadenas internas en vectores
+    for($x = 0; $x < count($vectorBuscar2); $x++) 
 	{
-		if(!isset($ret[$k])) $ret[$k] = [];
+        $vectorBuscar2[$x] = str_split($vectorBuscar2[$x]);
+    }
 
-		if ($secuencia == array_slice($vectorBuscar,$i,$total))
-		{
-			$k++;
-
-			for($o = 0; $o < $total; $o++)
-			{
-				$ret[$k][] = $i;
-				$i++;
-			}
-
-			$k++;
-		}
-		else
-		{
-			$ret[$k][]  = $i;    
-			$i++;
-		}
-	}
-	
-	return $ret;
+    //devuelve el vector con los vectores internos
+    return $vectorBuscar2;
 }
 
 
@@ -164,4 +141,4 @@ function RenderVector($vector)
 //$vectorBits = [1,1,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0];
 //echo RenderVector(b8zs($vectorBits, false)); //logica negativa
 
-/*codigo para probar dbz3*/
+/*codigo para probar hdb3*/
