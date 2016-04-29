@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="appCodificacion">
+
+  <head>
+    <script data-require="angularjs@1.5.3" data-semver="1.5.3" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-controller="CodificacionController">
+    <h1>Codificación de señales bipolares</h1>
+    
+    <div class="form-group">
+      <label for="txtSecuencia">Escriba la secuencia de bits</label>
+      <input type="text" id="txtSecuencia" ng-model="Secuencia" placeholder="1000100001011101" onkeypress='return event.charCode == 49 || event.charCode == 48'>
+    </div>
+    
+    <div class="form-group">
+      <label>Mostrar en codificación</label>
+      <label class="optg"><input type="radio" name="optCod" ng-model="Tipo" value="ami"> AMI</label>
+      <label class="optg"><input type="radio" name="optCod" ng-model="Tipo" value="b8zs"> B8ZS</label>
+      <label class="optg"><input type="radio" name="optCod" ng-model="Tipo" value="hdb3"> HDB3</label>
+    </div>
+    
+    <div class="form-group">
+      <button ng-click="ProcesarCodificacion()" ng-hide="(Tipo == '') || (Secuencia == '')">Procesar</button>
+    </div>
+     
+    <hr>
+    
+    <div>{{ResultadoProcesamiento}}</div>
+    
+  </body>
+
+</html>
