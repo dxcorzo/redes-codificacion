@@ -176,11 +176,33 @@ function RenderVector($base, $vector)
     return "<table cellspacing='0'><tr class='head'>$header</tr><tr class='ld'>$s1</tr><tr class='lu'>$s2</tr></table>";
 }
 
+//PROCESAR POST
+
+$secuenciaEntrada = $_GET["trama"];
+$tipo = $_GET["tipo"];
+
+//convertir trama a vector
+$vectorBits = str_split($secuenciaEntrada);
+
+switch($tipo)
+{
+	case "ami":
+		$c = false; //cambios de señal
+		$t = 0; //contador de unos
+		echo RenderVector($vectorBits, ami($vectorBits, $c, $t));
+		break;
+	case "hdb3":
+		echo RenderVector($vectorBits, hdb3($vectorBits));
+		break;
+	case "b8zs":
+		echo RenderVector($vectorBits, b8zs($vectorBits, true));
+		break;
+}
+
 /*Codigo para probar ami*/
 //$vectorBits = [0,1,0,0,1,1,1,0];
 //$signalChange = false;
 //echo RenderVector($vectorBits, ami($vectorBits));
-
 
 /*Codigo para probar b8zs*/
 //$vectorBits = [1,0,0,0,0,0,0,0,0,1,1];
