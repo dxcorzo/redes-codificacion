@@ -1,6 +1,6 @@
 (function()
 {
-  var app = angular.module("appCodificacion", []);
+  var app = angular.module("appCodificacion", ['ngSanitize']);
   app.controller("CodificacionController", CodificacionController);
   
   function CodificacionController($scope, $http)
