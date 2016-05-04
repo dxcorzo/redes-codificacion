@@ -96,34 +96,34 @@ function hdb3($vector)
 //&$signalChange es un bool pasado por referencia que indica si inicio con cambio de señal
 function ami($vector, &$signalChange, &$totalUnosTransmitidos)
 {
-    $bitAux = null;
-    $ret = [];
+	$bitAux = null;
+	$ret = [];
     
 	//recorrer todo el vector
-    foreach($vector as $bit)
-    {
-        if($bit == 1)
-        {
-			//colocar 1 o -1 dependiendo del cambio de señal
-            $bitAux = $signalChange ? -1 : 1;
-			
-			//cambiar señal
-            $signalChange = !$signalChange;
-			
+	foreach($vector as $bit)
+	{
+		if($bit == 1)
+		{
+		        //colocar 1 o -1 dependiendo del cambio de señal
+		        $bitAux = $signalChange ? -1 : 1;
+		
+		        //cambiar señal
+		        $signalChange = !$signalChange;
+				
 			//sumar el # de 1 transmitidos independiente si es positivo o negativo
 			//luego lo usaremos para determinar si es par o impar
 			$totalUnosTransmitidos++;
-        }
-        else
-        {
-            $bitAux = 0;
-        }
-        
+		}
+		else
+		{
+		    $bitAux = 0;
+		}
+	
 		//adicionar item al vector
-        array_push($ret, $bitAux);
-    }
+		array_push($ret, $bitAux);
+	}
     
-    return $ret;
+    	return $ret;
 }
 
 
@@ -141,42 +141,42 @@ function DetectarMetodoResolucion($vectorRev, $metodoVerificar)
 function DividirVector($patron, $vectorBuscar)
 {
 	//convertir ambos vectores a strings para poder manipularlos mediante expresiones regulares
-    $patron2 = implode("", $patron);
-    $vectorBuscar2  = implode("", $vectorBuscar);
+    	$patron2 = implode("", $patron);
+    	$vectorBuscar2  = implode("", $vectorBuscar);
 
 	//añadimos comas antes y despues de la cadena a buscar
-    $vectorBuscar2  = preg_replace("/" . $patron2 . "/", "," . $patron2 . ",", $vectorBuscar2);
+    	$vectorBuscar2  = preg_replace("/" . $patron2 . "/", "," . $patron2 . ",", $vectorBuscar2);
 
-    //usando las comas, puedo armar un vector haciendo un split, ahi tengo tanto las coincidencias como los sobrantes
-    $vectorBuscar2  = preg_split("/,/", $vectorBuscar2, 0, PREG_SPLIT_NO_EMPTY);
+    	//usando las comas, puedo armar un vector haciendo un split, ahi tengo tanto las coincidencias como los sobrantes
+    	$vectorBuscar2  = preg_split("/,/", $vectorBuscar2, 0, PREG_SPLIT_NO_EMPTY);
 
-    //convertir los chars de las cadenas internas en vectores
-    for($x = 0; $x < count($vectorBuscar2); $x++) 
+    	//convertir los chars de las cadenas internas en vectores
+    	for($x = 0; $x < count($vectorBuscar2); $x++) 
 	{
-        $vectorBuscar2[$x] = str_split($vectorBuscar2[$x]);
-    }
+        	$vectorBuscar2[$x] = str_split($vectorBuscar2[$x]);
+	}
 
-    //devuelve el vector con los vectores internos
-    return $vectorBuscar2;
+    	//devuelve el vector con los vectores internos
+    	return $vectorBuscar2;
 }
 
 function RenderVector($base, $vector)
 {
-    $s1 = "";
-    $s2 = "";
-    $header = "";
+	$s1 = "";
+    	$s2 = "";
+    	$header = "";
 	
-    foreach($vector as $i => $bit)
-    {
-        $header .= "<th>".$base[$i]."</th>"; //mostrar el bit con el que se calculo el resultado		
-        $s1 .= "<td ".(($bit == 1) ? "class='up'" : "").">-</td>"; //linea para los positivos
-        $s2 .= "<td ".(($bit == -1) ? "class='dw'" : "").">-</td>"; //linea para los negativos
-    }
+	foreach($vector as $i => $bit)
+	{
+		$header .= "<th>".$base[$i]."</th>"; //mostrar el bit con el que se calculo el resultado		
+		$s1 .= "<td ".(($bit == 1) ? "class='up'" : "").">-</td>"; //linea para los positivos
+		$s2 .= "<td ".(($bit == -1) ? "class='dw'" : "").">-</td>"; //linea para los negativos
+	}
     
-    return "<table cellspacing='0'><tr class='head'>$header</tr><tr class='ld'>$s1</tr><tr class='lu'>$s2</tr></table>";
+   	return "<table cellspacing='0'><tr class='head'>$header</tr><tr class='ld'>$s1</tr><tr class='lu'>$s2</tr></table>";
 }
 
-//PROCESAR POST
+//PROCESAR GET
 
 $secuenciaEntrada = $_GET["trama"];
 $tipo = $_GET["tipo"];
